@@ -19,6 +19,21 @@ else:
     from urllib.request import urlretrieve
     '''
 
+def shuffle_data(X, y):
+    s = np.arange(len(X))
+    np.random.shuffle(s)
+    X = X[s]
+    y = y[s]
+    return X, y
+
+def yield_mb(X, y, batchsize=64, shuffle=False):
+    assert len(X) == len(y)
+    if shuffle:
+        X, y = shuffle_data(X, y)
+    # Only complete
+    for i in range(len(X)//batchsize):
+        yield X[i*batchsize:(i+1)*batchsize], y[i*batchsize:(i+1)*batchsize]
+
 
 def download_imdb(src="https://s3.amazonaws.com/text-datasets/imdb.npz"):
     ''' Load the training and testing data
@@ -40,11 +55,23 @@ def download_imdb(src="https://s3.amazonaws.com/text-datasets/imdb.npz"):
 
 
 def read_imdb():
-    x_train = np.load('./imdb/datasets/x_train.npy')
-    y_train = np.load('./imdb/datasets/y_train.npy')
-    x_test = np.load('./imdb/datasets/x_test.npy')
-    y_test = np.load('./imdb/datasets/y_test.npy')
-
+    fname = 'imdb/datasets/imdb.npz'
+    try:
+        print('Extracting files...')
+        with np.load(fname) as f:
+            x_train, y_train = f['x_train'], f['y_train']
+            x_test, y_test = f['x_test'], f['y_test']
+            print ('Done.')
+    finally:
+        # os.remove(fname)
+        print ('Load imdb: Done.')
+        
+    '''        
+    x_train = np.load('../datasets/x_train.npy')
+    y_train = np.load('../datasets/y_train.npy')
+    x_test = np.load('../datasets/x_test.npy')
+    y_test = np.load('../datasets/y_test.npy')
+    '''
     return x_train, y_train, x_test, y_test
 
 

@@ -8,6 +8,7 @@ build
 
 # data
 *.npy
+*.npz
 
 # dir
 ./datasets/aclImdb/*
