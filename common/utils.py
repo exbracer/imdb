@@ -55,7 +55,7 @@ def download_imdb(src="https://s3.amazonaws.com/text-datasets/imdb.npz"):
 
 
 def read_imdb():
-    fname = 'Chainer-Play/imdb/datasets/imdb.npz'
+    fname = 'datasets/imdb.npz'
     try:
         print('Extracting files...')
         with np.load(fname) as f:
