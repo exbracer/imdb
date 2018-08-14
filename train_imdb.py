@@ -53,14 +53,16 @@ class SymbolModule(chainer.Chain):
 		'''
 		TODO
 		'''
-		_xs = self.embedding(x)
-		print type(_xs)
-		print _xs.shape
-		_xs = 
-		#h0 = chainer.Variable(np.zeros([1, batchsize, nhid]).astype(np.float64))
-		_hy, _ys = self.gru(hx=None, xs=[_xs])
-		_hy = _hy[:,-1,:].squeeze()
-		_h = self.l_out(_hy)
+		_x = self.embedding(x)
+		_xs = [F.squeeze(xe, 0) for xe in F.split_axis(_x, batchsize, 0)]
+		#_xs = F.split_axis(_x, batchsize, 0)
+		#print len(_xs)
+		#print _xs[0].shape
+		_hy, _ys = self.gru(hx=None, xs=_xs)
+		#print _hy[0].shape
+		#_hy = _hy[:,-1,:].squeeze()
+		_h = self.l_out(_hy[0])
+		#print _h.shape
 		return _h
 
 def init_model(m, lr=LR, b1=BETA_1, b2=BETA_2, eps=EPS):
@@ -118,7 +120,7 @@ with chainer.using_config('train', False), chainer.using_config('enable_backprop
 	for data, target in yield_mb(x_test, y_test, BATCHSIZE):
 		# Forward propagations
 		#pred = cuda.to_cpu(sym(cuda.to_gpu(data)).data.argmax(-1)
-		pred = sym(data).argmax(-1) # CPU-only version
+		pred = sym(data).data.argmax(-1) # CPU-only version
 		# Collect results
 		y_guess[c*BATCHSIZE:(c+1)*BATCHSIZE] = pred
 		c += 1
