@@ -35,7 +35,7 @@ print("Chainer: ", chainer.__version__)
 print("CuPy: ", chainer.cuda.cupy.__version__)
 print("Numpy: ", np.__version__)
 print("GPU: ", get_gpu_name())
-print("CuDNN Version ", get_cudnn_version())
+#print("CuDNN Version ", get_cudnn_version())
 
 # Defination of a GRU for IMDB sentiment analysis
 class SymbolModule(chainer.Chain):
