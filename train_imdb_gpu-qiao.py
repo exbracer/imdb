@@ -3,7 +3,7 @@
 Analysis task
 
 """
-
+from __future__ import division
 import numpy as np
 import os
 import sys
@@ -21,6 +21,7 @@ from chainer import cuda
 
 from common.utils import *
 from common.params_gru import *
+
 
 # Performance Improvement
 # 1. Auto-tune
