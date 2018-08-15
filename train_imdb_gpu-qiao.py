@@ -119,7 +119,7 @@ c = 0
 with chainer.using_config('train', False), chainer.using_config('enable_backprop', False):
 	for data, target in yield_mb(x_test, y_test, BATCHSIZE):
 		# Forward propagations
-		pred = cuda.to_cpu(sym(cuda.to_gpu(data)).data.argmax(-1)
+		pred = cuda.to_cpu(sym(cuda.to_gpu(data)).data.argmax(-1))
 		#pred = sym(data).data.argmax(-1) # CPU-only version
 		# Collect results
 		y_guess[c*BATCHSIZE:(c+1)*BATCHSIZE] = pred
